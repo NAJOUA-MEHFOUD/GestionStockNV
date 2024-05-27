@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de Stock</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-nE3vLp2OuMu4+ggqoUoW4rwl/27hHQh2jsZjMsVb/zAMOZerTu4kYOHCqB9wX9sGKeg5vAMg5FQhZVJufZIKvg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .card-custom {
+            border: none;
+            border-radius: 15px;
+            margin-top: 20px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        .btn-custom {
+            width: 150px;
+            margin: 5px;
+            transition: background-color 0.2s, transform 0.2s;
+            border-radius: 30px;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            background-color: #4CAF50;
+            color: #fff;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #edf2f7;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        .text-center button,
+        .text-center a {
+            margin: 0 10px;
+        }
+        .icon {
+            margin-right: 5px;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            color: #343a40;
+        }
+    </style>
+</head>
+<body>
+ <h1 style="font-family: 'Arial Black', sans-serif; font-size: 36px; color: #333; text-align: center; margin-top: 40px; text-transform: uppercase;">Gestion de Stock</h1>
+
+    <div class="container mt-4">
+        <div class="card card-custom p-4 form-container">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a class="btn btn-primary btn-custom" href="/addform">
+                    <i class="fas fa-plus-circle icon"></i> Ajouter
+                </a>
+                <!-- Formulaire de recherche -->
+                <form class="d-flex" action="/rechercherItem" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Rechercher par ID" aria-label="Search" name="id">
+                    <button class="btn btn-outline-success btn-custom" type="submit">
+                        <i class="fas fa-search icon"></i> Rechercher
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card card-custom p-4">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col"></th> <!-- Case à cocher pour la sélection -->
+                        <th scope="col">ID</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Prix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${itemList}">
+                        <td><input type="radio" class="itemRadio" name="selectedItem" value="${item.id}"></td>
+                        <td th:text="${item.id}" scope="row"></td>
+                        <td th:text="${item.name}"></td>
+                        <td th:text="${item.description}"></td>
+                        <td th:text="${item.quantity}"></td>
+                        <td th:text="${item.price}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Boutons de suppression et modification -->
+        <div class="d-flex justify-content-center mt-4">
+            <form id="deleteForm" action="/supprimerItem" method="post" style="display: none;">
+                <input type="hidden" id="selectedItemId" name="id">
+                <button type="submit" class="btn btn-danger btn-custom">
+                    <i class="fas fa-trash icon"></i> Supprimer
+                </button>
+            </form>
+            <a id="modifyButton" class="btn btn-primary btn-custom" href="#" style="display: none;">
+                <i class="fas fa-pencil-alt icon"></i> Modifier
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Récupérer les éléments HTML
+            var deleteForm = document.getElementById('deleteForm');
+            var modifyButton = document.getElementById('modifyButton');
+            var selectedItemIdInput = document.getElementById('selectedItemId');
+            var itemRadios = document.querySelectorAll('.itemRadio');
+
+            // Écouter le clic sur le bouton de modification
+            modifyButton.addEventListener('click', function (event) {
+                var selectedItemId = selectedItemIdInput.value;
+                if (selectedItemId) {
+                    window.location.href = '/modifierItem/' + selectedItemId;
+                }
+            });
+
+            // Écouter le clic sur le bouton de suppression
+            deleteForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // Empêcher la soumission du formulaire
+
+                var selectedItemId = selectedItemIdInput.value;
+                if (selectedItemId) {
+                    var confirmation = confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');
+                    if (confirmation) {
+                        // Soumettre le formulaire de suppression
+                        this.submit();
+                    }
+                }
+            });
+
+            // Sélectionner une ligne lorsqu'on clique sur un bouton radio
+            itemRadios.forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    selectedItemIdInput.value = this.value;
+                    modifyButton.style.display = 'inline-block';
+                    deleteForm.style.display = 'inline-block';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

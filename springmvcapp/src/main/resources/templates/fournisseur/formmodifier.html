@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Modifier Fournisseur</title>
+</head>
+<body>
+<div class="container">
+    <h1>Modifier Fournisseur</h1>
+    <form th:action="@{/modifierFournisseur/{id}(id=${fournisseur.id})}" th:object="${fournisseur}" method="post">
+        <div class="mb-3">
+            <label for="id" class="form-label">ID</label>
+            <input type="text" id="id" class="form-control" th:field="*{id}" readonly />
+        </div>
+        <div class="mb-3">
+            <label for="companyName" class="form-label">Nom de l'entreprise</label>
+            <input type="text" id="companyName" class="form-control" th:field="*{companyName}" />
+            <div class="text-danger" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}">Nom de l'entreprise est requis</div>
+        </div>
+        <div class="mb-3">
+            <label for="contactName" class="form-label">Nom du contact</label>
+            <input type="text" id="contactName" class="form-control" th:field="*{contactName}" />
+            <div class="text-danger" th:if="${#fields.hasErrors('contactName')}" th:errors="*{contactName}">Nom du contact est requis</div>
+        </div>
+        <div class="mb-3">
+            <label for="contactTitle" class="form-label">Titre du contact</label>
+            <input type="text" id="contactTitle" class="form-control" th:field="*{contactTitle}" />
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Adresse</label>
+            <input type="text" id="address" class="form-control" th:field="*{address}" />
+        </div>
+        <div class="mb-3">
+            <label for="city" class="form-label">Ville</label>
+            <input type="text" id="city" class="form-control" th:field="*{city}" />
+        </div>
+        <div class="mb-3">
+            <label for="region" class="form-label">Région</label>
+            <input type="text" id="region" class="form-control" th:field="*{region}" />
+        </div>
+        <div class="mb-3">
+            <label for="postalCode" class="form-label">Code postal</label>
+            <input type="text" id="postalCode" class="form-control" th:field="*{postalCode}" />
+        </div>
+        <div class="mb-3">
+            <label for="country" class="form-label">Pays</label>
+            <input type="text" id="country" class="form-control" th:field="*{country}" />
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Téléphone</label>
+            <input type="text" id="phone" class="form-control" th:field="*{phone}" />
+        </div>
+        <div class="mb-3">
+            <label for="fax" class="form-label">Fax</label>
+            <input type="text" id="fax" class="form-control" th:field="*{fax}" />
+        </div>
+        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+        <a href="/listerFournisseurs" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+</body>
+</html>

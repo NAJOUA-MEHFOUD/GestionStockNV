@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Modifier Fournisseur</title>
+</head>
+<body>
+<div class="container">
+    <h1>Modifier Fournisseur</h1>
+    <form method="post" th:action="@{/modifierFournisseur/{id}(id=${fournisseur.id})}">
+        <div class="mb-3">
+            <label for="companyName" class="form-label">Nom de l'entreprise</label>
+            <input name="companyName" type="text" class="form-control" id="fournisseurCompanyName" th:value="${fournisseur.companyName}">
+            <div id="fournisseurCompanyNameError" class="form-text" th:errors="${fournisseur.companyName}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="contactName" class="form-label">Nom du contact</label>
+            <input name="contactName" type="text" class="form-control" id="fournisseurContactName" th:value="${fournisseur.contactName}">
+            <div id="fournisseurContactNameError" class="form-text" th:errors="${fournisseur.contactName}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="contactTitle" class="form-label">Titre du contact</label>
+            <input name="contactTitle" type="text" class="form-control" id="fournisseurContactTitle" th:value="${fournisseur.contactTitle}">
+            <div id="fournisseurContactTitleError" class="form-text" th:errors="${fournisseur.contactTitle}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Adresse</label>
+            <input name="address" type="text" class="form-control" id="fournisseurAddress" th:value="${fournisseur.address}">
+            <div id="fournisseurAddressError" class="form-text" th:errors="${fournisseur.address}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="city" class="form-label">Ville</label>
+            <input name="city" type="text" class="form-control" id="fournisseurCity" th:value="${fournisseur.city}">
+            <div id="fournisseurCityError" class="form-text" th:errors="${fournisseur.city}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="region" class="form-label">Région</label>
+            <input name="region" type="text" class="form-control" id="fournisseurRegion" th:value="${fournisseur.region}">
+            <div id="fournisseurRegionError" class="form-text" th:errors="${fournisseur.region}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="postalCode" class="form-label">Code postal</label>
+            <input name="postalCode" type="text" class="form-control" id="fournisseurPostalCode" th:value="${fournisseur.postalCode}">
+            <div id="fournisseurPostalCodeError" class="form-text" th:errors="${fournisseur.postalCode}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="country" class="form-label">Pays</label>
+            <input name="country" type="text" class="form-control" id="fournisseurCountry" th:value="${fournisseur.country}">
+            <div id="fournisseurCountryError" class="form-text" th:errors="${fournisseur.country}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Téléphone</label>
+            <input name="phone" type="text" class="form-control" id="fournisseurPhone" th:value="${fournisseur.phone}">
+            <div id="fournisseurPhoneError" class="form-text" th:errors="${fournisseur.phone}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="fax" class="form-label">Fax</label>
+            <input name="fax" type="text" class="form-control" id="fournisseurFax" th:value="${fournisseur.fax}">
+            <div id="fournisseurFaxError" class="form-text" th:errors="${fournisseur.fax}"></div>
+        </div>
+        <button type="submit" class="btn btn-primary">Modifier</button>
+    </form>
+</div>
+</body>
+</html>
