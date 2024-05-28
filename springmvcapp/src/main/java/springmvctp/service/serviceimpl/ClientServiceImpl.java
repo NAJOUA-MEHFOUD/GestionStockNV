@@ -1,4 +1,4 @@
-/*package springmvctp.service.serviceimpl;
+package springmvctp.service.serviceimpl;
 
 	import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import java.util.List;
 	    }
 
 	    @Override
-	    public Client getClient(Integer id) {
+	    public Client getClientById(Integer id) {
 	        Optional<Client> clientOptional = clientRepository.findById(id);
 	        return clientOptional.orElse(null);
 	    }
@@ -44,4 +44,4 @@ import java.util.List;
 	    public Client getClientByEmail(String email) {
 	        return clientRepository.findByEmail(email);
 	    }
-	}*/
+	}

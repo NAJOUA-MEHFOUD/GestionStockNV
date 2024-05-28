@@ -1,4 +1,4 @@
-/*package springmvctp.dao.entities;
+package springmvctp.dao.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,10 +19,8 @@ public class Client {
     private String firstName;
     private String lastName;
     private String email;
-    private String password; // Champ pour stocker le mot de passe
     private String address; // Champ pour stocker l'adresse
     private String phoneNumber; // Champ pour stocker le numéro de téléphone
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Order> orders;
-}*/
+  
+}

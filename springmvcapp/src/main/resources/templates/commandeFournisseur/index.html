@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Commandes</title>
+</head>
+<body>
+    <h1>Liste des Commandes</h1>
+    <a class="btn btn-primary" th:href="@{ajouterCommandeFournisseur}">Nouvelle Commande</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Fournisseur</th>
+                <th>Quantité</th>
+                <th>Date d'entrée</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="commande : ${commandes}">
+                <td th:text="${commande.item.name}">Item</td>
+                <td th:text="${commande.fournisseur.companyName}">Fournisseur</td>
+                <td th:text="${commande.quantity}">Quantité</td>
+                <td th:text="${commande.dateEntree}">Date d'entrée</td>
+                <td>
+                    <a th:href="@{/modifierCommandeFournisseur/{id}(id=${commande.id})}">Editer</a>
+                    <form th:action="@{/supprimerCommandeFournisseur/{id}(id=${commande.id})}" method="post" style="display:inline;">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

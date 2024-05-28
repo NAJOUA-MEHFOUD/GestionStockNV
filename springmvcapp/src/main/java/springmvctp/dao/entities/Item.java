@@ -1,9 +1,12 @@
 package springmvctp.dao.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -32,4 +35,8 @@ public class Item {
     @NotNull
     @Positive
     private Double price;
+    
+    @OneToMany(mappedBy = "item")
+    private List<CommandeFournisseur> commandes;
+
 }
