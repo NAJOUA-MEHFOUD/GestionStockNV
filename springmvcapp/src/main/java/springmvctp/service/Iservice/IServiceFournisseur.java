@@ -9,4 +9,5 @@ public interface IServiceFournisseur {
     Fournisseur rechercherFournisseur(Integer id);
     void modifierFournisseur(Fournisseur fournisseur);
     List<Fournisseur> listerFournisseurs();
+    List<Fournisseur> getAllFournisseurs();
 }

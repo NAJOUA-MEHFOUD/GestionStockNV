@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier Commande Fournisseur</title>
+</head>
+<body>
+    <h1>Modifier Commande Fournisseur</h1>
+    <form th:action="@{/modifierCommandeFournisseur/{id}(id=${commandeFournisseur.id})}" th:object="${commandeFournisseur}" method="post">
+        <div>
+            <label for="item">Item</label>
+            <select id="item" th:field="*{item.id}">
+                <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.name}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="fournisseur">Fournisseur</label>
+            <select id="fournisseur" th:field="*{fournisseur.id}">
+                <option th:each="fournisseur : ${fournisseurs}" th:value="${fournisseur.id}" th:text="${fournisseur.companyName}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="quantity">Quantité</label>
+            <input type="number" id="quantity" th:field="*{quantity}" />
+        </div>
+        <div>
+            <label for="dateEntree">Date d'entrée</label>
+            <input type="date" id="dateEntree" th:field="*{dateEntree}" />
+        </div>
+        <div>
+            <button type="submit">Sauvegarder</button>
+        </div>
+    </form>
+</body>
+</html>

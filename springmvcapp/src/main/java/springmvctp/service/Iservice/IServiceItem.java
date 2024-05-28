@@ -1,6 +1,7 @@
 package springmvctp.service.Iservice;
 
 import java.util.List;
+
 import springmvctp.dao.entities.Item;
 
 public interface IServiceItem {
@@ -9,5 +10,7 @@ public interface IServiceItem {
     Item rechercherItem(Integer id);
     void modifierItem(Item item);
     List<Item> listerItems();
-   
+    List<Item> getAllItems();
+    void augmenterQuantiteItem(Integer itemId, Integer quantiteAjoutee);
+    void diminuerQuantiteItem(Integer itemId, Integer quantiteDiminuee);
 }

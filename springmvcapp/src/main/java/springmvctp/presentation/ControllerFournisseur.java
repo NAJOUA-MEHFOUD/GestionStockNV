@@ -21,6 +21,7 @@ import jakarta.validation.Valid;
 public class ControllerFournisseur {
 
     private final IServiceFournisseur fournisseurService;
+    
 
     @GetMapping("/listerFournisseurs")
     public String getListeFournisseurs(Model model) {
