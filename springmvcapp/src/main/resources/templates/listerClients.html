@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Clients</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('form.delete-form').on('submit', function (e) {
+                e.preventDefault(); // Empêche le formulaire de se soumettre normalement
+                
+                var form = $(this);
+                var url = form.attr('action');
+                
+                // Confirmation de la suppression
+                if (confirm('Êtes-vous sûr de vouloir supprimer ce client?')) {
+                    // Effectuer une requête AJAX pour supprimer le client
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        success: function () {
+                            // Recharger la liste des clients sans recharger la page
+                            window.location.replace("/listerClients");
+                        },
+                        error: function () {
+                            alert('Une erreur s\'est produite lors de la suppression du client.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Liste des Clients</h1>
+    <a href="/ajouterClient">Ajouter un client</a> <!-- Bouton pour ajouter un client -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Adresse</th>
+                <th>Téléphone</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="client : ${clients}">
+                <td th:text="${client.id}"></td>
+                <td th:text="${client.firstName}"></td>
+                <td th:text="${client.lastName}"></td>
+                <td th:text="${client.email}"></td>
+                <td th:text="${client.address}"></td>
+                <td th:text="${client.phoneNumber}"></td>
+                <td>
+                    <a th:href="@{'/modifierClient/' + ${client.id}}">Modifier</a>
+                    <form th:action="@{'/supprimerClient/' + ${client.id}}" method="post" class="delete-form" style="display:inline;">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

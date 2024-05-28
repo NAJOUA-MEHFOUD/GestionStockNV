@@ -1,5 +1,4 @@
 package springmvctp.service.serviceimpl;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +42,11 @@ public class ServiceItemImpl implements IServiceItem {
             return item.get();
         }
     }
-
+    @Override
+    public Item getItemById(Integer id) {
+        Optional<Item> itemOptional = itemRepos.findById(id);
+        return itemOptional.orElse(null);
+    }
     @Override
     public void modifierItem(Item item) {
         itemRepos.save(item);
@@ -54,7 +57,20 @@ public class ServiceItemImpl implements IServiceItem {
     public List<Item> listerItems() {
         return itemRepos.findAll(); 
     }
+    public void updateProductStock(Integer productId, int quantity) {
+        Item product = itemRepos.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+        int updatedStock = product.getQuantity() + quantity; // Si la quantité est négative, cela décrémentera le stock
+        product.setQuantity(updatedStock);
+        itemRepos.save(product);
+    }
+}
+
+
+
+
+
+
+
 
 
    
-}

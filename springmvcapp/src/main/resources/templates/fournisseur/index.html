@@ -1,40 +1,74 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>Liste des Fournisseurs</title>
+    <title>Ajouter Commande</title>
+    <script>
+        function addProductInputs() {
+            var produitsCount = document.getElementById('produitsCount').value;
+            var produitsDiv = document.getElementById('produitsInputs');
+            produitsDiv.innerHTML = ''; // Effacer les champs existants
+
+            for (var i = 0; i < produitsCount; i++) {
+                var label = document.createElement('label');
+                label.htmlFor = 'produit_' + i; // Utilisation de 'htmlFor' au lieu de 'for'
+                label.textContent = 'Produit ' + (i + 1) + ': ';
+
+                var select = document.createElement('select');
+                select.id = 'produit_' + i;
+                select.name = 'produits[' + i + '].id';
+                select.required = true;
+
+                /* Thymeleaf boucle à travers les produits et génère les options */
+                /* Supposons que produits est une liste d'objets Item */
+                var produits = /*[[${produits}]]*/ null; // Ajout de Thymeleaf pour récupérer la liste des produits
+                produits.forEach(function(produit) {
+                    var option = document.createElement('option');
+                    option.value = produit.id;
+                    option.textContent = produit.nom; // Utiliser le nom du produit
+                    select.appendChild(option);
+                });
+
+                var quantityInput = document.createElement('input');
+                quantityInput.type = 'number';
+                quantityInput.id = 'quantite_' + i;
+                quantityInput.name = 'produits[' + i + '].quantite';
+                quantityInput.placeholder = 'Quantité';
+                quantityInput.required = true;
+
+                produitsDiv.appendChild(label);
+                produitsDiv.appendChild(select);
+                produitsDiv.appendChild(quantityInput);
+                produitsDiv.appendChild(document.createElement('br')); // Ajouter un saut de ligne
+            }
+        }
+
+        function submitForm() {
+            addProductInputs(); // Ajouter les champs d'entrée de produit avant de soumettre
+            document.getElementById('commandeForm').submit();
+        }
+    </script>
 </head>
 <body>
-<div class="container">
-    <h1>Liste des Fournisseurs</h1>
-    <a class="btn btn-primary" th:href="@{/ajouterFournisseur}">Ajouter un Fournisseur</a>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom de l'entreprise</th>
-                <th>Nom du contact</th>
-                <th>Titre du contact</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="fournisseur : ${fournisseurList}">
-                <td th:text="${fournisseur.id}"></td>
-                <td th:text="${fournisseur.companyName}"></td>
-                <td th:text="${fournisseur.contactName}"></td>
-                <td th:text="${fournisseur.contactTitle}"></td>
-                <td>
-                    <a class="btn btn-info" th:href="@{/rechercherFournisseur(id=${fournisseur.id})}">Détails</a>
-                    <a class="btn btn-warning" th:href="@{/modifierFournisseur/{id}(id=${fournisseur.id})}">Modifier</a>
-                    <form th:action="@{/supprimerFournisseur/{id}(id=${fournisseur.id})}" method="post" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Supprimer</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <h1>Ajouter Commande</h1>
+    <form id="commandeForm" action="/ajouterCommande" method="post">
+        <div>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        <div>
+            <label for="client">Client:</label>
+            <select id="client" name="client" required>
+                <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.firstName + ' ' + client.lastName}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="produitsCount">Nombre de produits:</label>
+            <input type="number" id="produitsCount" name="produitsCount" min="1" required onchange="addProductInputs()">
+        </div>
+        <!-- Div pour contenir les champs d'entrée de produit -->
+        <div id="produitsInputs"></div>
+        <button type="button" onclick="submitForm()">Ajouter Commande</button>
+    </form>
 </body>
 </html>

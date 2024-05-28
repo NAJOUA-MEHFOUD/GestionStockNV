@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Commandes</title>
+    <style>
+        .confirmed {
+            color: green;
+        }
+        .canceled {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste des Commandes</h1>
+    <a href="/ajouterCommande">Ajouter Commande</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Client</th>
+                <th>Produits</th>
+                <th>Confirmée</th>
+                <th>Annulée</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="commande : ${commandeList}">
+                <td th:text="${commande.id}"></td>
+                <td th:text="${#dates.format(commande.date, 'yyyy-MM-dd')}"></td>
+                <td th:text="${commande.client.firstName + ' ' + commande.client.lastName}"></td>
+                <td>
+                    <ul>
+                        <li th:each="produitQuantite : ${commande.produitsQuantite}">
+                            <span th:text="${produitQuantite.produit.name} + ' - ' + ${produitQuantite.quantite}"></span>
+                        </li>
+                    </ul>
+                </td>
+                <td th:classappend="${commande.confirmee} ? 'confirmed' : ''" th:text="${commande.confirmee} ? 'Oui' : 'Non'"></td>
+                <td th:classappend="${commande.annulee} ? 'canceled' : ''" th:text="${commande.annulee} ? 'Oui' : 'Non'"></td>
+                <td>
+                    <div th:if="${!commande.confirmee && !commande.annulee}">
+                        <a th:href="@{'/ModifierCommande/' + ${commande.id}}">Modifier</a>
+                        <form th:action="@{'/confirmerCommande/' + ${commande.id}}" method="post" style="display:inline;" onsubmit="return confirm('Confirmer cette commande?');">
+                            <button type="submit">Confirmer</button>
+                        </form>
+                        <form th:action="@{'/annulerCommande/' + ${commande.id}}" method="post" style="display:inline;" onsubmit="return confirm('Annuler cette commande?');">
+                            <button type="submit">Annuler</button>
+                        </form>
+                    </div>
+                    <form th:action="@{'/supprimerCommande/' + ${commande.id}}" method="post" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de supprimer cette commande?');">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

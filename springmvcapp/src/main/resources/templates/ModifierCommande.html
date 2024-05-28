@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier Commande</title>
+</head>
+<body>
+    <h1>Modifier Commande</h1>
+    <form th:action="@{/ModifierCommande/{id}(id=${commande.id})}" method="post">
+        <input type="hidden" id="id" name="id" th:value="${commande.id}">
+
+        <div>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" th:value="${#dates.format(commande.date, 'yyyy-MM-dd')}" required>
+        </div>
+        <div>
+            <label for="client">Client:</label>
+            <select id="client" name="client.id" required>
+                <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.firstName + ' ' + client.lastName}" th:selected="${commande.client.id == client.id}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="produitsCount">Nombre de produits:</label>
+            <input type="number" id="produitsCount" name="produitsCount" min="1" required onchange="addProductInputs()">
+        </div>
+        <div id="produitsInputs">
+            <div th:each="produitQuantite, stat : ${commande.produitsQuantite}">
+                <label th:text="'Produit ' + ${stat.index + 1} + ': '"></label>
+                <select name="produits[__${stat.index}__].id" required>
+                    <option th:each="produit : ${produits}" th:value="${produit.id}" th:text="${produit.name}" th:selected="${produitQuantite.produit.id == produit.id}"></option>
+                </select>
+                <input type="number" name="produits[__${stat.index}__].quantity" th:value="${produitQuantite.quantite}" placeholder="Quantité" required>
+                <br>
+            </div>
+        </div>
+        <button type="submit">Modifier Commande</button>
+    </form>
+
+    <script th:inline="javascript">
+        function addProductInputs() {
+            var produitsCount = document.getElementById('produitsCount').value;
+            var produitsDiv = document.getElementById('produitsInputs');
+            produitsDiv.innerHTML = ''; // Effacer les champs existants
+
+            /* Thymeleaf boucle à travers les produits et génère les champs de produit */
+            var produits = /*[[${produits}]]*/ []; // Remplacez ceci par la liste des produits récupérés par Thymeleaf
+            for (var i = 0; i < produitsCount; i++) {
+                var produitSelect = document.createElement('select');
+                produitSelect.name = 'produits[' + i + '].id';
+                produitSelect.required = true;
+
+                produits.forEach(function(produit) {
+                    var option = document.createElement('option');
+                    option.value = produit.id;
+                    option.textContent = produit.name; 
+                    produitSelect.appendChild(option);
+                });
+
+                var quantityInput = document.createElement('input');
+                quantityInput.type = 'number';
+                quantityInput.name = 'produits[' + i + '].quantity';
+                quantityInput.placeholder = 'Quantité';
+                quantityInput.required = true;
+
+                var produitNumberLabel = document.createElement('label');
+                produitNumberLabel.textContent = 'Produit ' + (i + 1) + ': '; 
+                produitsDiv.appendChild(produitNumberLabel);
+
+                produitsDiv.appendChild(produitSelect);
+                produitsDiv.appendChild(quantityInput);
+                produitsDiv.appendChild(document.createElement('br')); 
+            }
+        }
+    </script>
+</body>
+</html>
