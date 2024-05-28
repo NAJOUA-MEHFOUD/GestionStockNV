@@ -24,14 +24,5 @@ public class User {
     @NotEmpty
     private String password;
 
-    @NotEmpty
-    private String firstName;
-
-    @NotEmpty
-    private String lastName;
-
-    @NotEmpty
-    private String email;
-
-    // Vous pouvez ajouter d'autres champs selon vos besoins
+    
 }
