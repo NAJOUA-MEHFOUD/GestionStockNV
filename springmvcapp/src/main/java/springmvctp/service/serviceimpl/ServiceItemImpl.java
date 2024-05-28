@@ -3,7 +3,6 @@ package springmvctp.service.serviceimpl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,7 @@ import springmvctp.service.Iservice.IServiceItem;
 public class ServiceItemImpl implements IServiceItem {
 
     private final IItemRepos itemRepos;
-
+    
     @Override
     public void ajouterItem(Item item) {
         itemRepos.save(item);
@@ -27,21 +26,17 @@ public class ServiceItemImpl implements IServiceItem {
     @Override
     public void supprimerItem(Integer id) {
         Optional<Item> item = itemRepos.findById(id);
-        if (item.isEmpty()) {
-            throw new RuntimeException("Item not found");
-        } else {
+        if (item.isPresent()) {
             itemRepos.deleteById(id);
+        } else {
+            throw new RuntimeException("Item not found");
         }
     }
 
     @Override
     public Item rechercherItem(Integer id) {
-        Optional<Item> item = itemRepos.findById(id);
-        if (item.isEmpty()) {
-            throw new RuntimeException("Item not found");
-        } else {
-            return item.get();
-        }
+        return itemRepos.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Item not found"));
     }
 
     @Override
@@ -49,12 +44,31 @@ public class ServiceItemImpl implements IServiceItem {
         itemRepos.save(item);
     }
 
-    
     @Override
     public List<Item> listerItems() {
         return itemRepos.findAll(); 
     }
 
+    @Override
+    public List<Item> getAllItems() {
+        return itemRepos.findAll();
+    }
 
-   
+    @Override
+    public void augmenterQuantiteItem(Integer itemId, Integer quantiteAjoutee) {
+        Item item = itemRepos.findById(itemId)
+                             .orElseThrow(() -> new RuntimeException("Item not found"));
+        int nouvelleQuantite = item.getQuantity() + quantiteAjoutee;
+        item.setQuantity(nouvelleQuantite);
+        itemRepos.save(item);
+    }
+
+    @Override
+    public void diminuerQuantiteItem(Integer itemId, Integer quantiteDiminuee) {
+        Item item = itemRepos.findById(itemId)
+                             .orElseThrow(() -> new RuntimeException("Item not found"));
+        int nouvelleQuantite = item.getQuantity() - quantiteDiminuee;
+        item.setQuantity(nouvelleQuantite);
+        itemRepos.save(item);
+    }
 }

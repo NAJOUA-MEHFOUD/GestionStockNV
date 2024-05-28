@@ -2,6 +2,8 @@ package springmvctp.service.serviceimpl;
 
 import java.util.List;
 import java.util.Optional;
+
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
@@ -15,6 +17,7 @@ import springmvctp.service.Iservice.IServiceFournisseur;
 public class ServiceFournisseurImpl implements IServiceFournisseur {
 
 	private final IFournisseurRepos IfournisseurRepos;
+	 
 
 	@Override
 	public void ajouterFournisseur(Fournisseur fournisseur) {
@@ -50,4 +53,8 @@ public class ServiceFournisseurImpl implements IServiceFournisseur {
 	public List<Fournisseur> listerFournisseurs() {
 		return IfournisseurRepos.findAll();
 	}
+	@Override
+    public List<Fournisseur> getAllFournisseurs() {
+        return IfournisseurRepos.findAll();
+    }
 }
